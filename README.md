@@ -1,6 +1,6 @@
 # Movie Watchlist App
 
-This project is a movie watchlist application with a React frontend and a Node.js backend.
+A simple app to add your favourite movie to your watchlist
 
 ## Features
 
