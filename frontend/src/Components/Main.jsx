@@ -1,19 +1,24 @@
-import React from 'react'
-import { Movies } from './Movies'
+import { useState} from 'react'
+import { Movie } from './Movies'
+import { SearchBar } from './SearchBar'
+import { List } from './List'
 
 export const Main = () => {
-    return (
-        <div className='mt-4'>
-            <div className='flex gap-3 flex-wrap'>
-                <Movies title='' image='' ></Movies>
-                <Movies title='' image='' ></Movies>
-                <Movies title='' image='' ></Movies>
-                <Movies title='' image='' ></Movies>
-                <Movies title='' image='' ></Movies>
-                <Movies title='' image='' ></Movies>
-                
-            </div>
+    const [movies, setMovies] = useState([])
 
-        </div>
+    return (
+        <>
+            <SearchBar></SearchBar>
+            <div className='mt-4'>
+                <div className='flex gap-3 flex-wrap'>
+                    <Movie title='' image='' ></Movie>
+                    <Movie title='' image='' ></Movie>
+                    <Movie title='' image='' ></Movie>
+                    <Movie title='' image='' ></Movie>
+                    <Movie title='' image='' ></Movie>
+                    <Movie title='' image='' ></Movie>
+                </div>
+            </div>
+        </>
     )
 }

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import { Link } from 'react-router-dom';
 
-function Login() {
+function AdminLogin() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -47,7 +47,6 @@ function Login() {
                             <input onChange={(e) => { setPassword(e.target.value) }} value={password} type="password" className="block bg-zinc-800 p-4 mt-2 rounded-lg text-white w-full h-10" placeholder="" />
                         </div>
                         <button className="bg-gray-700 mt-5 px-4 py-2 text-white rounded-lg hover:bg-gray-800 transition ease-in" >Login</button>
-                        <span className="block text-white mt-2 text-sm self-end">Dont't have a account<Link className="underline font-bold ml-2" to='/register' >register here</Link> </span>
                     </form>
                 </div>
             </div>
@@ -55,4 +54,4 @@ function Login() {
     )
 }
 
-export default Login
+export default AdminLogin
