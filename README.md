@@ -29,5 +29,8 @@ A simple app to add your favourite movie to your watchlist
 - **MongoDB**
 - **JWT**
 
-
-
+##ENV Variable required:
+> PORT
+> ACCESS_TOKEN_SECRET
+> REFRESH_TOKEN_SECRET 
+> VITE_TMDB_API_KEY 
