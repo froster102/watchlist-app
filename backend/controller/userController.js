@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import User from '../model/User.js'
 import brcrypt from 'bcrypt'
 import { generateAccessToken, generateRefreshToken } from '../utils/utils.js'
-import jwt, { decode } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 
 
 mongoose.connect('mongodb://localhost:27017')
@@ -24,7 +24,7 @@ const loginUser = async (req, res) => {
                         sameSite: 'None',
                         maxAge: 7 * 24 * 60 * 60 * 1000
                     })
-                    res.status(200).json({ token: accessToken })
+                    res.status(200).json({ token: accessToken ,userId:user._id,role:user.role},)
                 }
                 else {
                     res.status(401).json({ message: 'Bad Credentials' })

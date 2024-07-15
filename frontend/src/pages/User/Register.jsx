@@ -1,13 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
+import {  useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useRegisterMutation } from '../../features/userSlice';
 
 function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirm, setConfirm] = useState('')
+    const [register,{isLoading}] = useRegisterMutation()
+    const navigate = useNavigate()
 
-    function handle(e) {
+    const user = useSelector(state=>state.auth.userId)
+
+    useEffect(()=>{
+        if(user){
+            navigate('/')
+        }
+    },[user])
+
+    async function handle(e) {
         e.preventDefault()
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!email || !password) {
@@ -44,6 +57,14 @@ function Register() {
             })
         }
         else {
+            try{
+                const res = await register({email,password})
+                console.log(res)
+                navigate('/login')
+                toast.success('Registration succesfull please login')
+            }catch(e){
+                toast.error(e?.data?.message)
+            }
             setEmail('')
             setPassword('')
             setConfirm('')

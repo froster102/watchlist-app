@@ -1,32 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
-
-export const authenticateUser = async (email, password) => {
-    try {
-        const response = await axios.post('http://localhost:3000/api/user/login', {
-            email: email,
-            password: password
-        })
-        return response.data
-    } catch (e) {
-        throw error.response.data
-    }
-}
-
-export const login = createAsyncThunk(
-    'auth/login',
-    async ({ email, password }, { rejectWithValue }) => {
-        try {
-            const userData = await authenticateUser(email, password);
-            return userData;
-        } catch (error) {
-            return rejectWithValue(error);
-        }
-    }
-);
-
-
-
+import { createSlice } from '@reduxjs/toolkit'
 
 const authSlice = createSlice({
     name: 'auth',
@@ -36,14 +8,23 @@ const authSlice = createSlice({
         token: null
     },
     reducers: {
+        setCredentials:(state,action)=>{
+            const {userId,token,role} = action.payload
+            state.userId = userId,
+            state.token = token,
+            state.role = role
+        },
         logout: (state, action) => {
             state.userId = null,
                 state.role = null,
                 state.token = null
         }
     },
-    // extraReducers 
 })
 
-export const { logout } = authSlice.actions
+export const { logout,setCredentials } = authSlice.actions
 export default authSlice.reducer
+
+export const selectCurrentUser = (state) => state.auth.userId
+export const selectCurrentToken = (state) => state.auth.token
+export const selectCurrentUserRole = (state) =>state.auth.role

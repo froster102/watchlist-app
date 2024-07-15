@@ -6,7 +6,7 @@ export const Header = ({ text, role }) => {
     return (
         <>
             <div className="text-white flex items-center relative">
-                {openDropdown ? role === 'user' ? <ul className='absolute right-0 top-12 bg-zinc-700 border-[1px] border-zinc-600 rounded-md p-2'>
+                {openDropdown ? role === 'user' ? <ul className='absolute right-0 top-12 bg-zinc-700 border-[1px] border-zinc-600 rounded-md p-2 z-50'>
                     <li className='hover:underline transition ease-in' >Profile</li>
                     <li className='hover:underline transition ease-in'>Log Out</li>
                 </ul> : '' : ''}

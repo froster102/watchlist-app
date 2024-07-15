@@ -1,12 +1,21 @@
-import { useState } from 'react'
+import {  useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate  } from 'react-router-dom';
+import { useLoginMutation } from '../../features/userSlice';
+import { setCredentials } from '../../features/authSlice';
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const [login, { isLoading }] = useLoginMutation()
+    const user = useSelector(state=>state.auth.userId)
 
-    function handle(e) {
+
+    async function handle(e) {
         e.preventDefault()
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!email || !password) {
@@ -26,6 +35,14 @@ function Login() {
                 }
             })
         } else {
+            try {
+                const userData = await login({email,password}).unwrap()
+                dispatch(setCredentials(userData))
+                console.log(userData)
+                navigate('/',{replace:true})
+            } catch (e) {
+               toast.error(e?.data?.message)
+            }
             setEmail('')
             setPassword('')
         }
