@@ -5,7 +5,7 @@ const generateAccessToken = (userId, role) => {
         "userId": userId,
         "role": role
     }, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: '120s'
+        expiresIn: '30m'
     })
 }
 
@@ -20,5 +20,5 @@ const generateRefreshToken = (userId, role) => {
 
 export {
     generateAccessToken,
-    generateRefreshToken
+    generateRefreshToken,
 }

@@ -7,9 +7,11 @@ import axios from 'axios'
 export const SearchBar = () => {
     const [input, setInput] = useState()
     const [results, setResults] = useState([])
+
+    const apiKey = import.meta.env.VITE_TMDB_API_KEY
+
     async function search(input) {
         if (input !== '') {
-            console.log(input)
             const response = await axios.get(`https://api.themoviedb.org/3/search/movie?query=${input}&api_key=${apiKey}`)
             setResults((prevState) => response.data.results)
         } else {

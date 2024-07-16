@@ -6,8 +6,8 @@ import { Profile } from './pages/User/Profile'
 import { Dashboard } from './pages/Admin/Dashboard'
 import AdminLogin from './pages/Admin/AdminLogin'
 import RequireUserAuth from './Components/RequireUserAuth'
-
-
+import RequireAdminAuth from './Components/RequireAdminAuth'
+import NotFound from './pages/User/NotFound'
 
 function App() {
 
@@ -21,7 +21,10 @@ function App() {
           <Route path='/profile' element={<Profile></Profile>}></Route>
         </Route>
         <Route path='/admin/login' element={<AdminLogin></AdminLogin>}></Route>
-        <Route path='/admin/' element={<Dashboard></Dashboard>}></Route>
+        <Route element={<RequireAdminAuth></RequireAdminAuth>} >
+          <Route path='/admin/' element={<Dashboard></Dashboard>}></Route>
+        </Route>
+        <Route path='*' element={<NotFound></NotFound>} ></Route>
       </Routes>
     </>
   )

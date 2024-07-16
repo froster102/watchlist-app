@@ -1,4 +1,4 @@
-import jwt, { decode } from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 
 const userAuth = (req, res, next) => {
     const authHeader = req.headers.authorization || req.headers.Authorization
@@ -7,8 +7,10 @@ const userAuth = (req, res, next) => {
         if (err) {
             return res.status(403).json({ message: 'Forbidden' })
         }
+        else if (decoded.role!=='user'){
+            return res.status(401).json({message:'Not Authorized'})
+        }
         req.userId = decoded.userId
-        req.role = decoded.role
         next()
     })
 }
@@ -20,8 +22,10 @@ const adminAuth = (req, res, next) => {
         if (err) {
             return res.status(403).json({ message: 'Forbidden' })
         }
+        else if (decoded.role!=='admin'){
+            return res.status(401).json({message:'Not Authorized'})
+        }
         req.userId = decoded.userId
-        req.role = decoded.role
         next()
     })
 }

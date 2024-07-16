@@ -10,7 +10,8 @@ const userSchema = new mongoose.Schema({
         default: () => {
             Date.now()
         }
-    }
+    },
+    imageUrl: { type: String }
 })
 
 export default mongoose.model('User', userSchema)

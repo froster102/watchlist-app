@@ -1,9 +1,9 @@
-import {  useState } from 'react'
+import { useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate  } from 'react-router-dom';
-import { useLoginMutation } from '../../features/userSlice';
+import { useDispatch } from 'react-redux';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useLoginMutation } from '../../features/userApiSlice';
 import { setCredentials } from '../../features/authSlice';
 
 function Login() {
@@ -11,10 +11,10 @@ function Login() {
     const [password, setPassword] = useState('');
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const location = useLocation()
+    const pathname = location.state?.from?.pathname || '/'
     const [login, { isLoading }] = useLoginMutation()
-    const user = useSelector(state=>state.auth.userId)
-
-
+    
     async function handle(e) {
         e.preventDefault()
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -36,12 +36,13 @@ function Login() {
             })
         } else {
             try {
-                const userData = await login({email,password}).unwrap()
-                dispatch(setCredentials(userData))
-                console.log(userData)
-                navigate('/',{replace:true})
+                const token = await login({ email, password }).unwrap()
+                dispatch(setCredentials(token))
+                console.log(token)
+                navigate(pathname, { replace: true })
             } catch (e) {
-               toast.error(e?.data?.message)
+                console.log(e)
+                toast.error(e?.data?.message)
             }
             setEmail('')
             setPassword('')

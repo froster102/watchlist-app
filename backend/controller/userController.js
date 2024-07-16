@@ -2,7 +2,8 @@ import mongoose from 'mongoose'
 import User from '../model/User.js'
 import brcrypt from 'bcrypt'
 import { generateAccessToken, generateRefreshToken } from '../utils/utils.js'
-import jwt from 'jsonwebtoken'
+import { storage } from '../firebaseConfig.js'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 
 
 mongoose.connect('mongodb://localhost:27017')
@@ -12,7 +13,6 @@ const loginUser = async (req, res) => {
     const user = await User.findOne({ email: email })
     if (user) {
         if (user.role !== 'admin') {
-            console.log(user)
             try {
                 const check = await brcrypt.compare(password, user.password)
                 if (check) {
@@ -24,7 +24,7 @@ const loginUser = async (req, res) => {
                         sameSite: 'None',
                         maxAge: 7 * 24 * 60 * 60 * 1000
                     })
-                    res.status(200).json({ token: accessToken ,userId:user._id,role:user.role},)
+                    res.status(200).json({ accessToken, role: user.role })
                 }
                 else {
                     res.status(401).json({ message: 'Bad Credentials' })
@@ -40,20 +40,6 @@ const loginUser = async (req, res) => {
     }
 }
 
-const refresh = (req, res) => {
-    const refreshToken = req.cookies.jwt;
-    if (!refreshToken) {
-        return res.status(401).json({ message: 'unauthorised no token' })
-    }
-
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
-        if (err) {
-            return res.status(403).json({ message: 'invalid token' })
-        }
-        const accessToken = generateAccessToken(decoded.userId, decoded.role)
-        res.json({ accessToken })
-    })
-}
 
 const register = async (req, res) => {
     const { email, password } = req.body
@@ -72,12 +58,24 @@ const register = async (req, res) => {
     }
 }
 
-const userProfile = (req, res) => {
-    res.status(200).json({ message: 'user profile' })
+const userProfile = async (req, res) => {
+    const { email, imageUrl } = await User.findById(req.userId)
+    res.status(200).json({ email: email, imageUrl: imageUrl })
 }
 
-const profileImage = (req, res) => {
-    res.status(200).json({ message: 'image added' })
+const addProfileImage = async (req, res) => {
+    const { originalname, buffer } = req.file
+    try {
+        const storageRef = ref(storage, 'images/' + originalname)
+        const snapshot = await uploadBytes(storageRef, buffer)
+        const imageUrl = await getDownloadURL(snapshot.ref)
+        console.log(imageUrl)
+        const response = await User.findByIdAndUpdate(req.userId, { imageUrl: imageUrl })
+        console.log(response)
+        res.status(200).json({ message: 'image added' })
+    } catch (e) {
+        console.log(e.message)
+    }
 }
 
 const watchlist = (req, res) => {
@@ -92,20 +90,12 @@ const removeMovie = (req, res) => {
     res.status(200).json({ message: 'removed suceess' })
 }
 
-const logoutUser = (req, res) => {
-    const cookies = req.cookies
-    res.clearCookie('jwt', { httpOnly: true, sameSite: 'none', secure: false })
-    res.status(200).json({ message: 'logged out' })
-}
-
 export {
     loginUser,
     register,
-    refresh,
     userProfile,
-    profileImage,
+    addProfileImage,
     watchlist,
     addMovie,
     removeMovie,
-    logoutUser
 }

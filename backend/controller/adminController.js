@@ -20,7 +20,7 @@ const adminLogin = async (req, res) => {
                 sameSite: 'None',
                 maxAge: 7 * 24 * 60 * 60 * 1000
             })
-            res.status(200).json({ accessToken })
+            res.status(200).json({ accessToken, role: user.role })
         }
 
         else {
@@ -33,9 +33,9 @@ const adminLogin = async (req, res) => {
 }
 
 const usersList = async (req, res) => {
-    let users = await User.find()
+    let users = await User.find({}, { _id: 1, email: 1, role: 1 })
     users = users.filter((user) => (user.role !== 'admin'))
-    console.log(users)
+    // console.log(users)
     res.status(200).json({
         users: users
     })
@@ -44,11 +44,9 @@ const usersList = async (req, res) => {
 const deleteUser = async (req, res) => {
     const { id } = req.body
     try {
-        const user = await User.findById(id)
-        if (user) {
-            console.log(user)
-            const response = await User.deleteOne({ email: user.email })
-            if (response.deletedCount > 0) {
+        if (id) {
+            const response = await User.findByIdAndDelete(id)
+            if (response) {
                 res.status(200).json({ message: 'User deleted sucessfully' })
             }
             else {
@@ -64,9 +62,10 @@ const deleteUser = async (req, res) => {
 }
 
 const editUser = async (req, res) => {
-    const { id, email } = req.body
+    const { userId, userEmail } = req.body
+    console.log(userId, userEmail)
     try {
-        const user = await User.findByIdAndUpdate(id, { email: email })
+        const user = await User.findByIdAndUpdate(userId, { email: userEmail })
         if (user) {
             res.status(200).json({ message: 'User updated sucessfully' })
         } else {
@@ -78,18 +77,9 @@ const editUser = async (req, res) => {
 }
 
 
-
-const logoutUser = (req, res) => {
-    const cookies = req.cookies
-    res.clearCookie('jwt', { httpOnly: true, sameSite: 'none', secure: false })
-    res.status(200).json({ message: 'logged out' })
-}
-
 export {
     adminLogin,
     usersList,
     deleteUser,
     editUser,
-    refresh,
-    logoutUser
 }

@@ -1,12 +1,18 @@
 import { useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useAdminLoginMutation } from '../../features/adminApiSlice';
+import { setCredentials } from '../../features/authSlice';
 
 function AdminLogin() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const dispatch = useDispatch()
+    const [adminLogin, { isLoading }] = useAdminLoginMutation()
+    const navigate = useNavigate()
 
-    function handle(e) {
+    async function handle(e) {
         e.preventDefault()
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!email || !password) {
@@ -26,10 +32,20 @@ function AdminLogin() {
                 }
             })
         } else {
+            try {
+                const res = await adminLogin({ email, password }).unwrap()
+                dispatch(setCredentials(res))
+                console.log(res)
+                navigate('/admin/', { replace: true })
+            } catch (e) {
+                toast.error(e?.data?.message)
+                console.log(e)
+            }
             setEmail('')
             setPassword('')
         }
     }
+    
 
     return (
         <>

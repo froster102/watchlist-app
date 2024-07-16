@@ -1,14 +1,12 @@
 import { Router } from "express";
-import { adminLogin, deleteUser, editUser, logoutUser, refresh, usersList } from "../controller/adminController.js";
-import { userAuth } from "../middleware/authMiddleware.js";
+import { adminLogin, deleteUser, editUser, usersList } from "../controller/adminController.js";
+import { adminAuth } from "../middleware/authMiddleware.js";
 
 const router = Router()
 
 router.post('/login', adminLogin)
-router.get('/',userAuth, usersList)
-router.delete('/deleteUser',userAuth, deleteUser)
-router.patch('/editUser',userAuth, editUser)
-router.get('/refresh', refresh)
-router.post('/logout', logoutUser)
+router.get('/',adminAuth, usersList)
+router.delete('/deleteUser',adminAuth, deleteUser)
+router.patch('/editUser',adminAuth, editUser)
 
 export default router

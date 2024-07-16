@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
-import {  useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useRegisterMutation } from '../../features/userSlice';
+import { useRegisterMutation } from '../../features/userApiSlice';
 
 function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirm, setConfirm] = useState('')
-    const [register,{isLoading}] = useRegisterMutation()
+    const [register, { isLoading }] = useRegisterMutation()
     const navigate = useNavigate()
 
-    const user = useSelector(state=>state.auth.userId)
+    const user = useSelector(state => state.auth.userId)
 
-    useEffect(()=>{
-        if(user){
+    useEffect(() => {
+        if (user) {
             navigate('/')
         }
-    },[user])
+    }, [user])
 
     async function handle(e) {
         e.preventDefault()
@@ -57,13 +57,14 @@ function Register() {
             })
         }
         else {
-            try{
-                const res = await register({email,password})
+            try {
+                const res = await register({ email, password }).unwrap()
                 console.log(res)
                 navigate('/login')
                 toast.success('Registration succesfull please login')
-            }catch(e){
+            } catch (e) {
                 toast.error(e?.data?.message)
+                console.log(e)
             }
             setEmail('')
             setPassword('')
