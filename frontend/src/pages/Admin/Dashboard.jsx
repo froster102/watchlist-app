@@ -43,6 +43,7 @@ export const Dashboard = () => {
         try {
             const res = await editUser(id,email).unwrap()
             setModal(!modal)
+            refetch()
         } catch (e) {
             console.log(e)
         }
@@ -52,7 +53,7 @@ export const Dashboard = () => {
         <>
             <div className="flex modal-container items-center justify-center h-dvh px-2">
                 <div className="relative p-2 border-[1px] border-zinc-700 bg-zinc-800 rounded-lg w-[402px] md:w-[534px] lg:w-[666px]">
-                    {modal ? <EditModal id={userId} email={email} onClick={closeModal} onClickEdit={editUserInfo} ></EditModal> : ''}
+                    {modal ? <EditModal id={userId} email={email} onClick={closeModal} onClickEdit={editUserInfo}></EditModal> : ''}
                     <div className="flex flex-col">
                         <Header text='Dashboard' role='admin'></Header>
                         <div className='flex items-center bg-zinc-600 w-fit mt-2 px-4 py-1 rounded-md'>

@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import User from '../model/User.js'
 import brcrypt from 'bcrypt'
 import { generateAccessToken, generateRefreshToken } from '../utils/utils.js'
-import { storage } from '../firebaseConfig.js'
+import { storage } from '../fireBaseConfig.js'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 
 
