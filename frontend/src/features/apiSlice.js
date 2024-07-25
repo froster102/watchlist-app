@@ -16,12 +16,13 @@ const baseQuery = fetchBaseQuery({
 const baseQueryReauth = async (args, api, extraOptions) => {
     let result = await baseQuery(args, api, extraOptions)
     console.log(result)
-    if (result?.error?.originalStatus === 403) {
+    if (result?.error?.status === 403) {
         console.log('sending refresh token')
-        const refreshResult = await baseQuery('/auth/refresh')
-        console.log(refreshResult)
+        const refreshResult = await baseQuery('/auth/refresh', api, extraOptions)
         if (refreshResult?.data) {
-            api.dispatch(setCredentials({ ...refreshResult.data }))
+            console.log(refreshResult?.data)
+            const { role } = api.getState().auth
+            api.dispatch(setCredentials({ ...refreshResult?.data, role }))
         } else {
             api.dispatch(logout())
         }
@@ -35,10 +36,10 @@ export const apiSlice = createApi({
         logout: builder.mutation({
             query: () => ({
                 url: '/auth/logout',
-                method: 'POST'
+                method: 'GET'
             })
         })
     })
 })
 
-export const { useLogoutMutation } = apiSlice
+export const { useLogoutMutation, useRefreshMutation } = apiSlice

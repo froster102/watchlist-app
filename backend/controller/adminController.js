@@ -1,10 +1,6 @@
-import mongoose from "mongoose"
 import User from "../model/User.js"
 import bcrypt from 'bcrypt'
 import { generateAccessToken, generateRefreshToken } from "../utils/utils.js"
-
-
-mongoose.connect('mongodb://localhost:27017')
 
 const adminLogin = async (req, res) => {
     const { email, password } = req.body
@@ -17,7 +13,6 @@ const adminLogin = async (req, res) => {
             res.cookie('jwt', refreshToken, {
                 httpOnly: true,
                 secure: false,
-                sameSite: 'None',
                 maxAge: 7 * 24 * 60 * 60 * 1000
             })
             res.status(200).json({ accessToken, role: user.role })
@@ -35,7 +30,6 @@ const adminLogin = async (req, res) => {
 const usersList = async (req, res) => {
     let users = await User.find({}, { _id: 1, email: 1, role: 1 })
     users = users.filter((user) => (user.role !== 'admin'))
-    // console.log(users)
     res.status(200).json({
         users: users
     })

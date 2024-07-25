@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLoginMutation } from '../../features/userApiSlice';
 import { setCredentials } from '../../features/authSlice';
+import FadeLoader from 'react-spinners/FadeLoader'
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -13,8 +14,8 @@ function Login() {
     const navigate = useNavigate()
     const location = useLocation()
     const pathname = location.state?.from?.pathname || '/'
-    const [login, { isLoading }] = useLoginMutation()
-    
+    const [login, { isLoading, isSuccess, isError }] = useLoginMutation()
+
     async function handle(e) {
         e.preventDefault()
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -64,7 +65,10 @@ function Login() {
                             <span className="block text-white" >Password</span>
                             <input onChange={(e) => { setPassword(e.target.value) }} value={password} type="password" className="block bg-zinc-800 p-4 mt-2 rounded-lg text-white w-full h-10" placeholder="" />
                         </div>
-                        <button className="bg-gray-700 mt-5 px-4 py-2 text-white rounded-lg hover:bg-gray-800 transition ease-in" >Login</button>
+                        <button className="bg-gray-700 mt-5 px-4 py-2 text-white rounded-lg hover:bg-gray-800 transition ease-in" disabled={isLoading} >
+                            {isLoading?
+                            <FadeLoader size={15} ></FadeLoader>:'Login'}
+                        </button>
                         <span className="block text-white mt-2 text-sm self-end">Dont't have a account<Link className="underline font-bold ml-2" to='/register' >register here</Link> </span>
                     </form>
                 </div>

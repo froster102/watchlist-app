@@ -1,12 +1,8 @@
-import mongoose from 'mongoose'
 import User from '../model/User.js'
 import brcrypt from 'bcrypt'
 import { generateAccessToken, generateRefreshToken } from '../utils/utils.js'
 import { storage } from '../fireBaseConfig.js'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
-
-
-mongoose.connect('mongodb://localhost:27017')
 
 const loginUser = async (req, res) => {
     const { email, password } = req.body
@@ -21,7 +17,7 @@ const loginUser = async (req, res) => {
                     res.cookie('jwt', refreshToken, {
                         httpOnly: true,
                         secure: false,
-                        sameSite: 'None',
+                        // sameSite: 'None',
                         maxAge: 7 * 24 * 60 * 60 * 1000
                     })
                     res.status(200).json({ accessToken, role: user.role })

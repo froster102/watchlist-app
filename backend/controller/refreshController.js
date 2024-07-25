@@ -1,5 +1,9 @@
+import jwt from 'jsonwebtoken'
+import { generateAccessToken } from '../utils/utils.js';
+
 const refresh = (req, res) => {
     const refreshToken = req.cookies.jwt;
+    console.log(refreshToken)
     if (!refreshToken) {
         return res.status(401).json({ message: 'Unauthorised no token' })
     }

@@ -11,12 +11,10 @@ export const Header = ({ text, role, imageUrl }) => {
     const { data, refetch } = useGetProfileQuery()
     const [logoutUser, { isLoading }] = useLogoutMutation()
     const dispatch = useDispatch()
-    console.log('render')
-
+    
     useEffect(() => {
         refetch()
         setImage(data?.imageUrl)
-        console.log(data)
     }, [data, imageUrl])
 
     return (
