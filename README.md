@@ -18,7 +18,6 @@ A simple app to add your favourite movie to your watchlist
 
 - **React**
 - **React Router**
-- **Axios**
 - **Tailwind CSS**
 - **Redux**
 
