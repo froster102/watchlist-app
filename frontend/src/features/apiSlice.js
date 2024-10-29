@@ -42,4 +42,4 @@ export const apiSlice = createApi({
     })
 })
 
-export const { useLogoutMutation, useRefreshMutation } = apiSlice
+export const { useLogoutMutation } = apiSlice

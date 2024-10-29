@@ -31,8 +31,6 @@ const adminAuth = (req, res, next) => {
 }
 
 const logout = (req, res) => {
-    const cookies = req.cookies
-    console.log(cookies)
     res.clearCookie('jwt', { httpOnly: true, secure: false })
     res.status(200).json({ message: 'logged out' })
 }

@@ -26,7 +26,6 @@ export const Profile = () => {
         setImage(URL.createObjectURL(file))
         const res = await uploadImage(file)
     }
-    console.log('render')
 
     return (
         <>
