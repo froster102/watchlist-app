@@ -12,7 +12,8 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     wishlist: {
-        type: [String]
+        type: [String],
+        default: []
     },
     role: {
         type: String,
@@ -25,18 +26,29 @@ const userSchema = new mongoose.Schema({
             Date.now()
         }
     },
+    verificationStatus: {
+        type: Boolean,
+        default: false
+    },
     imageUrl: { type: String }
 })
 
+userSchema.statics.isEmailTaken = async function (email) {
+    const user = await this.findOne({ email })
+    return !!user
+}
+
 userSchema.pre('save', async function (next) {
     if (this.isModified('password')) {
-        this.password = bcrypt.hash(this.password, 10)
+        this.password = await bcrypt.hash(this.password, 10)
     }
     next()
 })
 
 userSchema.methods.comparePasswords = async function (inputPassword) {
-    return bcrypt.compare(inputPassword, this.password)
+    return bcrypt.compare(String(inputPassword), this.password)
 }
 
-export default mongoose.model('User', userSchema)
+const User = mongoose.model('User', userSchema)
+
+export default User

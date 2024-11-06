@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import tokenTypes from "../config/token";
+import tokenTypes from "../config/token.js";
 
-const tokenSchema = mongoose.Schema({
+const tokenSchema = new mongoose.Schema({
     token: {
         type: String,
         required: true,
@@ -28,4 +28,4 @@ const tokenSchema = mongoose.Schema({
 
 const Token = mongoose.model('Token', tokenSchema)
 
-export { Token }
+export default Token

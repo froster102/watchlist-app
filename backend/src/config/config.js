@@ -7,6 +7,9 @@ const config = {
         PORT: process.env.PORT,
         NODE_ENV: process.env.NODE_ENV
     },
+    otp: {
+        OTP_EXPIRATION_TIME: new Date(Date.now() + 5 * 60 * 1000)
+    },
     jwt: {
         JWT_SECRET: process.env.JWT_SECRET,
         ACCESS_TOKEN_EXPIRY: process.env.ACCESS_TOKEN_EXPIRY,
@@ -18,15 +21,12 @@ const config = {
     email: {
         smtp: {
             service: process.env.SMTP_SERVICE,
-            host: process.env.SMTP_HOST,
-            port: process.env.SMTP_PORT,
-            secure: true,
             auth: {
                 user: process.env.SMTP_EMAIL,
                 pass: process.env.SMTP_PASS
             }
         },
-        from: process.env.SMTP_EMAIL
+        from: process.env.FROM_EMAIL
     }
 }
 
