@@ -26,7 +26,9 @@ const config = {
                 pass: process.env.SMTP_PASS
             }
         },
-        from: process.env.FROM_EMAIL
+    },
+    client: {
+        appOrigin: process.env.APP_ORIGIN
     }
 }
 

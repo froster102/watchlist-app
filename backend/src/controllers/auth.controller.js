@@ -1,11 +1,19 @@
 import config from '../config/config.js'
+import tokenTypes from '../config/token.js'
+import Token from '../model/token.model.js'
 import { authService, emailService, tokenService, userService } from '../services/index.js'
+import ApiError from '../utils/ApiError.js'
 import catchAsync from '../utils/catchAsync.js'
 import httpStatus from 'http-status'
 
 export const signin = catchAsync(async (req, res) => {
     const { email, password } = req.body
     const { user } = await authService.signInWithEmailAndPassword(email, password)
+    if (user && !user.verificationStatus) {
+        return res.status(httpStatus.UNAUTHORIZED).json({
+            message: 'Please verify your email'
+        })
+    }
     const { accessToken, refreshToken } = await tokenService.generateAuthTokens(user)
     res.cookie('jwt', refreshToken, {
         httpOnly: true,
@@ -18,7 +26,12 @@ export const signin = catchAsync(async (req, res) => {
 
 export const signup = catchAsync(async (req, res) => {
     const user = await userService.createUser(req.body)
-    const verifyEmailToken = tokenService.generateEmailVerifyToken(user)
+    const verifyEmailToken = await tokenService.generateEmailVerifyToken(user)
     await emailService.sendVerificationEmail(user.email, verifyEmailToken)
     return res.status(httpStatus.CREATED).json({ message: 'Please verify your email by clicking link sent to your given email' })
+})
+
+export const verifyEmail = catchAsync(async (req, res) => {
+    await authService.verifyEmail(req.query.token)
+    return res.status(httpStatus.NO_CONTENT).send()
 })

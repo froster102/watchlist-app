@@ -16,3 +16,17 @@ export const signInWithEmailAndPassword = async (email, password) => {
     }
 }
 
+export const verifyEmail = async (verifyEmailToken) => {
+    try {
+        const verifyTokenDoc = await tokenService.verfiyToken(token, tokenTypes.VERIFY_EMAIL)
+        const user = await userService.getUserById(verifyTokenDoc.user)
+        if (!user) {
+            throw new Error()
+        }
+        await userService.updateUserById(user._id, { verficationStatus: true })
+        await Token.deleteMany({ user: user._id, type: tokenTypes.VERIFY_EMAIL })
+    } catch (error) {
+        throw new ApiError(httpStatus.UNAUTHORIZED, 'Email verification failed')
+    }
+}
+
