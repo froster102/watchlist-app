@@ -5,8 +5,11 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import config from './config/config.js';
 import connectToDatabase from './db/connection.js'
+import morgan from 'morgan'
 
 const app = express();
+
+app.use(morgan('dev'))
 
 app.use(cors({
   origin: 'http://localhost:5173',

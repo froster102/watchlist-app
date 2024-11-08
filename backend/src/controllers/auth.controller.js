@@ -1,8 +1,5 @@
 import config from '../config/config.js'
-import tokenTypes from '../config/token.js'
-import Token from '../model/token.model.js'
 import { authService, emailService, tokenService, userService } from '../services/index.js'
-import ApiError from '../utils/ApiError.js'
 import catchAsync from '../utils/catchAsync.js'
 import httpStatus from 'http-status'
 

@@ -6,7 +6,8 @@ import { userService } from './index.js'
 /** 
  * Sign in with email and password
  *@param {string} email
- *@param {string} password 
+ *@param {string} password
+ *@returns {Promise<User>} 
 */
 export const signInWithEmailAndPassword = async (email, password) => {
     const user = await User.findOne({ email })
@@ -16,6 +17,11 @@ export const signInWithEmailAndPassword = async (email, password) => {
     }
 }
 
+/**
+ * Verify the email token
+ * @param {string} verifyEmailToken 
+ * @returns {Promise}
+ */
 export const verifyEmail = async (verifyEmailToken) => {
     try {
         const verifyTokenDoc = await tokenService.verfiyToken(token, tokenTypes.VERIFY_EMAIL)

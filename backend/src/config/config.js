@@ -29,6 +29,9 @@ const config = {
     },
     client: {
         appOrigin: process.env.APP_ORIGIN
+    },
+    tmdb : {
+        accessToken : process.env.TMDB_ACCESS_TOKEN
     }
 }
 
