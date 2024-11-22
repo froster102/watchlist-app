@@ -1,7 +1,10 @@
 import express from "express";
 import { watchlistController } from "../controllers/index.js";
+import { auth } from "../middleware/auth.js";
 
 const router = express.Router()
+
+router.use(auth)
 
 router
     .route('/')

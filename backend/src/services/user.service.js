@@ -36,6 +36,12 @@ export const getUserById = async (userId) => {
     return User.findById(userId)
 }
 
+/**
+ * Update a user by id 
+ * @param {string} userId 
+ * @param {object} updateBody 
+ * @returns {Promise<User>}
+ */
 export const updateUserById = async (userId, updateBody) => {
     const user = await getUserById(userId)
     if (!user) {

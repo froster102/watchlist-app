@@ -28,7 +28,7 @@ export const sendEmail = async (to, subject, html) => {
  */
 export const sendVerificationEmail = async (to, token) => {
     const subject = 'Verification Email'
-    const verificationEmailUrl = `${config.client.appOrigin}/verify?token=${token}`
+    const verificationEmailUrl = `${config.client.appOrigin}?token=${token}`
     const html = `<p> Dear user,\n To verify your email please click on the link <a href="${verificationEmailUrl}" target='_blank' rel='noopener noreferrer'>verify</a>,\n
     If you did not create an account, then ignore this email </p>`
     await sendEmail(to, subject, html)
