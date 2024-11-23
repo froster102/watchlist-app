@@ -4,16 +4,16 @@ import catchAsync from '../utils/catchAsync.js'
 import httpStatus from 'http-status'
 
 export const getWatchlist = catchAsync(async (req, res) => {
-
+    const user = req.user
+    const watchlistId = await watchlistService.getWatchlistIdByUserId(user._id)
+    const watchlist = await watchlistService.getWatchlistById(watchlistId)
+    return res.status(httpStatus.OK).json(watchlist)
 })
 
 export const addToWatchlist = catchAsync(async (req, res) => {
     const { movieId } = req.body
-    const userId = req.userId
-    const watchlistId = await watchlistService.getWatchlistIdByUserId(userId)
-    if (!watchlist) {
-        await watchlistService.createWatchlist(userId)
-    }
+    const user = req.user
+    const watchlistId = await watchlistService.getWatchlistIdByUserId(user._id)
     const watchlist = await watchlistService.addMovieToWatchlist(movieId, watchlistId)
     return res.status(httpStatus.OK).json({ watchlist })
 })

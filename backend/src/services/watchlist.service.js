@@ -8,7 +8,7 @@ import tmdbClient from '../utils/tmdbClient.js'
  * @returns {Promise<Watchlist>}
  */
 export const getWatchlistById = async (watchlistId) => {
-    const watchlist = await Watchlist.findById(watchlist)
+    const watchlist = await Watchlist.findById(watchlistId)
     return watchlist
 }
 
@@ -31,6 +31,10 @@ export const createWatchlist = async (userId) => {
  */
 export const getWatchlistIdByUserId = async (userId) => {
     const watchlist = await Watchlist.findOne({ userId })
+    if (!watchlist) {
+        const watchlist = await createWatchlist(userId)
+        return watchlist._id
+    }
     return watchlist._id
 }
 
@@ -46,8 +50,15 @@ export const addMovieToWatchlist = async (movieId, watchlistId) => {
     if (!watchlist) {
         throw new ApiError(`Watchlist with ${watchlistId} not found`)
     }
-    console.log(data)
-    // watchlist.movies.push(movieDetails)
+    const {
+        id: tmdbMovieId,
+        poster_path: thumbnail,
+        title: movieTitle,
+        overview: description,
+        vote_average: rating,
+    } = data
+    const movieDetails = { tmdbMovieId, thumbnail, movieTitle, description, rating }
+    watchlist.movies.push(movieDetails)
     await watchlist.save()
     return watchlist
 }
