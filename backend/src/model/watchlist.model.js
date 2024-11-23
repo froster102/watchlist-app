@@ -20,14 +20,24 @@ const movieSchema = new mongoose.Schema({
         type: Number,
         required: true
     }
-}, { id: false })
+}, { _id: false })
 
 const watchlistSchema = new mongoose.Schema({
     userId: {
         type: mongoose.SchemaTypes.ObjectId,
         required: true
     },
-    movies: [movieSchema]
+    movies: {
+        type: [movieSchema],
+        validate: {
+            validator: function (movieDoc) {
+                const tmdbMovieIds = movieDoc.map(movie => movie.tmdbMovieId)
+                const uniqueTmdbMovieIds = new Set(tmdbMovieIds)
+                return tmdbMovieIds.length === uniqueTmdbMovieIds.size
+            },
+            message: 'Movie already exists'
+        }
+    }
 }, { timestamps: true })
 
 /**
