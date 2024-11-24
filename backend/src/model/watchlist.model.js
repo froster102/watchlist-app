@@ -40,6 +40,13 @@ const watchlistSchema = new mongoose.Schema({
     }
 }, { timestamps: true })
 
+movieSchema.pre('save', function (next) {
+    if (this.thumbnail) {
+        this.thumbnail = `https://image.tmdb.org/t/p/w500${this.thumbnail}`
+    }
+    next()
+})
+
 /**
  * @typedef Watchlist
  */
