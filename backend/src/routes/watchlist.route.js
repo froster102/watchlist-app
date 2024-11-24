@@ -10,7 +10,7 @@ router
     .route('/')
     .get(watchlistController.getWatchlist)
     .post(watchlistController.addToWatchlist)
-    .delete(watchlistController.removeFromWatchlist)
+router.delete('/:movieId', watchlistController.removeFromWatchlist)
 router.get('/search', watchlistController.searchMovie)
 
 export default router

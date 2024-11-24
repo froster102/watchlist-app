@@ -24,7 +24,10 @@ export const addToWatchlist = catchAsync(async (req, res) => {
 
 export const removeFromWatchlist = catchAsync(async (req, res) => {
     const { movieId } = req.params
-    const userId = req.user
+    const user = req.user
+    const watchlistId = await watchlistService.getWatchlistIdByUserId(user._id)
+    const watchlist = await watchlistService.removeMovieFromWatchlist(watchlistId, movieId)
+    return res.status(httpStatus.OK).json({ watchlist })
 })
 
 export const searchMovie = catchAsync(async (req, res) => {

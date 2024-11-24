@@ -1,6 +1,7 @@
-import ApiError from '../utils/ApiError.js'
 import { Watchlist } from '../model/index.js'
+import ApiError from '../utils/ApiError.js'
 import tmdbClient from '../utils/tmdbClient.js'
+import httpStatus from 'http-status'
 
 /**
  * Get watchlist by id
@@ -36,6 +37,24 @@ export const getWatchlistIdByUserId = async (userId) => {
         return watchlist._id
     }
     return watchlist._id
+}
+
+/**
+ * Remove movie from watchlist
+ * @param {string} watchlistId 
+ * @param {string} movieId
+ * @returns {Promise<Watchlist>} 
+ */
+export const removeMovieFromWatchlist = async (watchlistId, movieId) => {
+    const watchlist = await getWatchlistById(watchlistId)
+    const foundMovieIndex = watchlist.movies.findIndex(movie => movie.tmdbMovieId === movieId)
+    if (foundMovieIndex === -1) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Movie not found in watchlist')
+    }
+    watchlist.movies.splice(foundMovieIndex, 1)
+    await watchlist.save()
+    console.log(watchlist)
+    return watchlist
 }
 
 /**
