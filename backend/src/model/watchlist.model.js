@@ -41,8 +41,11 @@ const watchlistSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 movieSchema.pre('save', function (next) {
-    if (this.thumbnail) {
-        this.thumbnail = `https://image.tmdb.org/t/p/w500${this.thumbnail}`
+    if (this.isModified('thumbnail') && this.thumbnail) {
+        const baseUrl = 'https://image.tmdb.org/t/p/w500'
+        if (!this.thumbnail.startsWith(baseUrl)) {
+            this.thumbnail = baseUrl + this.thumbnail
+        }
     }
     next()
 })
