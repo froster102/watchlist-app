@@ -47,9 +47,6 @@ export const getWatchlistIdByUserId = async (userId) => {
 export const addMovieToWatchlist = async (movieId, watchlistId) => {
     const watchlist = await getWatchlistById(watchlistId)
     const { data } = await tmdbClient.get(`https://api.themoviedb.org/3/movie/${movieId}?language=en-US`)
-    if (!watchlist) {
-        throw new ApiError(`Watchlist with ${watchlistId} not found`)
-    }
     const {
         id: tmdbMovieId,
         poster_path: thumbnail,
