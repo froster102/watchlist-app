@@ -14,7 +14,7 @@ import { Token } from '../model/index.js'
 */
 export const signInWithEmailAndPassword = async (email, password) => {
     const user = await User.findOne({ email })
-    if (!user || (!user.comparePasswords(password))) throw new ApiError(httpStatus.UNAUTHORIZED, 'Invalid credentials')
+    if (!user || (!user.comparePasswords(password))) throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid credentials')
     return {
         user
     }
