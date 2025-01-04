@@ -30,5 +30,5 @@ export const signup = catchAsync(async (req, res) => {
 
 export const verifyEmail = catchAsync(async (req, res) => {
     await authService.verifyEmail(req.query.token)
-    return res.status(httpStatus.NO_CONTENT).send()
+    return res.redirect(config.client.domain)
 })

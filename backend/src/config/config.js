@@ -15,7 +15,8 @@ const envValidationSchema = Joi.object()
         SMTP_EMAIL: Joi.string().required().description('Username for email server'),
         SMTP_PASS: Joi.string().required().description('Password for email server'),
         APP_ORIGIN: Joi.string().required().description('Client side app origin'),
-        TMDB_ACCESS_TOKEN: Joi.string().required().description('Access token for tmdb service')
+        TMDB_ACCESS_TOKEN: Joi.string().required().description('Access token for tmdb service'),
+        CLIENT_DOMAIN: Joi.string().required().description('Client domain for redirects')
     })
 
 const { value: envVars, error } = envValidationSchema.prefs({ errors: { label: 'key' } }).validate(process.env, { allowUnknown: true })
@@ -27,7 +28,8 @@ if (error) {
 const config = {
     server: {
         PORT: envVars.PORT,
-        NODE_ENV: envVars.NODE_ENV
+        NODE_ENV: envVars.NODE_ENV,
+        appOrigin: envVars.APP_ORIGIN
     },
     otp: {
         OTP_EXPIRATION_TIME: new Date(Date.now() + 5 * 60 * 1000)
@@ -50,7 +52,7 @@ const config = {
         },
     },
     client: {
-        appOrigin: envVars.CLIENT_APP_ORIGIN
+        domain: envVars.CLIENT_DOMAIN
     },
     tmdb: {
         accessToken: envVars.TMDB_ACCESS_TOKEN
