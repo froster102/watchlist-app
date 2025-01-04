@@ -3,16 +3,16 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 import { BrowserRouter } from 'react-router-dom'
-import { Provider } from 'react-redux'
-import store from './app/store.js'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
+const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <React.StrictMode>
+  <BrowserRouter>
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
         <App />
-      </React.StrictMode>,
-    </BrowserRouter>
-  </Provider>
+      </QueryClientProvider>
+    </React.StrictMode>,
+  </BrowserRouter>
 )

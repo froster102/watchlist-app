@@ -1,15 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Header } from '../../Components/Header'
-import { useGetProfileQuery } from '../../features/userApiSlice'
-import { useAddImageMutation } from '../../features/userApiSlice'
+import { Header } from '../components/Header'
 
 export const Profile = () => {
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [overlay, setOverlay] = useState(false)
-    const { data, refetch } = useGetProfileQuery()
     const [image, setImage] = useState('')
-    const [uploadImage, { isLoading }] = useAddImageMutation()
 
     console.log(data)
 
@@ -19,7 +15,7 @@ export const Profile = () => {
         setUsername(data?.email.split('@')[0])
         setEmail(data?.email)
         setImage(data?.imageUrl)
-    }, [data])
+    }, [])
 
     async function handleChange(e) {
         const file = e.target.files[0]

@@ -1,13 +1,10 @@
 import { useState } from 'react'
-import { Header } from "../../Components/Header"
-import { SearchBar } from "../../Components/SearchBar"
-import { Movie } from '../../Components/Movies'
+import { Header } from "../components/Header"
+import { SearchBar } from '../components/SearchBar'
 
 
 function Home() {
     const [movies, setMovies] = useState([])
-    console.log('render')
-    console.log(movies)
     return (
         <>
             <div className="flex items-center justify-center h-dvh px-2">
@@ -17,10 +14,9 @@ function Home() {
                         <SearchBar movies={movies} setMovies={setMovies}></SearchBar>
                         <div className='mt-4'>
                             <div className='flex gap-3 flex-wrap'>
-                                {movies.map((movie) => {
+                                {/* {movies.map((movie) => {
                                     return <Movie key={movie.id} title={movie.title} image={`https://image.tmdb.org/t/p/w300/${movie.backdrop_path}`} ></Movie>
-
-                                })}
+                                })} */}
                             </div>
                         </div>
                     </div>
