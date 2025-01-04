@@ -23,7 +23,10 @@ function SignIn() {
 
     function signIn(credentials) {
         signInMutation.mutate({ ...credentials }, {
-            onSuccess: () => navigate('/')
+            onSuccess: () => navigate('/'),
+            onError: (error) => {
+                toast.error(error.response.data.message)
+            }
         })
     }
 
