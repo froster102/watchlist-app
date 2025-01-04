@@ -50,7 +50,7 @@ const config = {
         },
     },
     client: {
-        appOrigin: envVars.APP_ORIGIN
+        appOrigin: envVars.CLIENT_APP_ORIGIN
     },
     tmdb: {
         accessToken: envVars.TMDB_ACCESS_TOKEN
