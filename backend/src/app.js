@@ -22,8 +22,8 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(passport.initialize())
-passport.use('jwt',jwtStrategy)
-app.use('/api/v1', routes)
+passport.use('jwt', jwtStrategy)
+app.use('/v1/api/', routes)
 
 app.get('/', (req, res) => res.status(200).json({ message: 'Server is running' }))
 
