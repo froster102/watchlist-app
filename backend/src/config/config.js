@@ -14,7 +14,7 @@ const envValidationSchema = Joi.object()
         SMTP_SERVICE: Joi.string().required().description('Smtp service name to connect email server'),
         SMTP_EMAIL: Joi.string().required().description('Username for email server'),
         SMTP_PASS: Joi.string().required().description('Password for email server'),
-        CLIENT_APP_ORIGIN: Joi.string().required().description('Client side app origin'),
+        APP_ORIGIN: Joi.string().required().description('Client side app origin'),
         TMDB_ACCESS_TOKEN: Joi.string().required().description('Access token for tmdb service')
     })
 
