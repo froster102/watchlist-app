@@ -10,11 +10,11 @@ interface ContentListProps {
 export default function ContentList({ title, contents }: ContentListProps) {
   return (
     <>
-      <div className="px-4">
-        <h3 className="mt-8 scroll-m-20 text-2xl font-semibold tracking-tight">
+      <div>
+        <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">
           {title}
         </h3>
-        <ScrollArea className="mt-4 max-w-screen whitespace rounded-md border">
+        <ScrollArea className="mt-2 max-w-screen whitespace rounded-md border">
           <div className="flex w-max space-x-4 p-4 overflow-x-auto ">
             {contents.map((result) => (
               <ContentCard
